@@ -4,6 +4,10 @@ import App from "./App";
 import { fetchShow as mockFetchShow } from "./api/fetchShow";
 import userEvent from "@testing-library/user-event";
 
+jest.mock("./api/fetchShow");
+// console.log(mockFetchShow)
+
+//hardcode the shape of the response - must be an obj with a data property
 const mockData = {
   data: {
     id: 2993,
@@ -134,13 +138,10 @@ const mockData = {
   },
 };
 
-jest.mock("./api/fetchShow.js");
-
 test("App renders without errors and can import", async () => {
   mockFetchShow.mockResolvedValueOnce(mockData);
 
   //Render App
-  render(<App />);
   const { getByText, getAllByText } = render(<App />);
 
   //Query for Dropdown!!
@@ -151,5 +152,5 @@ test("App renders without errors and can import", async () => {
 
   //Make Assertions - dropdown shows season 1
   expect(getAllByText(/season /i)).toHaveLength(1);
-  expect(mockFetchShow).toHaveBeenCalledTimes(2);
+  expect(mockFetchShow).toHaveBeenCalledTimes(1);
 });
